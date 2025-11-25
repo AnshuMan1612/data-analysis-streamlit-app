@@ -19,7 +19,44 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from pathlib import Path
+# ============================================================================
+# Login System
+# ============================================================================
 
+
+# === USER CREDENTIALS (edit as needed) ===
+USERS = {
+    "user1": "pass1",
+    "user2": "pass2"
+}
+
+# === LOGIN LOGIC ===
+if "authenticated" not in st.session_state:
+    st.session_state["authenticated"] = False
+
+def login():
+    st.title("Login")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if USERS.get(username) == password:
+            st.session_state["authenticated"] = True
+            st.success("Login successful!")
+            st.rerun()
+        else:
+            st.error("Incorrect username or password.")
+
+def logout():
+    if st.button("Logout"):
+        st.session_state["authenticated"] = False
+        st.rerun()
+
+if not st.session_state["authenticated"]:
+    login()
+    st.stop()  # Prevents rest of the app from running if not logged in
+
+# === Your dashboard/app code goes below! ===
+logout()
 # ============================================================================
 # PAGE CONFIG
 # ============================================================================
